@@ -1,4 +1,4 @@
-package com.pw3.e_commerce.model.domain;
+package com.pw3.e_commerce.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -7,25 +7,40 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Entity
-@Table (name = "products")
-public class Product extends AbstractEntity<Long>{
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat.Style;
 
-    @Column (name = "name", nullable = false, unique = false, length = 60)
+@Entity
+@Table(name = "products")
+public class Product extends AbstractEntity<Long> {
+
+    @Column(name = "name", nullable = false, unique = false, length = 60)
     private String name;
 
-    private Long barCode;
+    @Column(name = "barCode", nullable = false, unique = true)
+    private String barCode;
 
+    @Column(name = "typeOfProduct")
     private String type;
 
+    @DateTimeFormat(iso = ISO.DATE)
+    @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate manufactoringDate;
 
+    @DateTimeFormat(iso = ISO.DATE)
+    @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate expirationDate;
-    
+
+    @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
+    @Column(nullable = false, columnDefinition = "DECIMAL(3,2) DEFAULT 0.00")
     private BigDecimal unitPrice;
 
-    
-    public Product(String name, Long barCode, String type, LocalDate manufactoringDate, LocalDate expirationDate,
+    public Product() {
+    }
+
+    public Product(String name, String barCode, String type, LocalDate manufactoringDate, LocalDate expirationDate,
             BigDecimal unitPrice) {
         this.name = name;
         this.barCode = barCode;
@@ -35,67 +50,53 @@ public class Product extends AbstractEntity<Long>{
         this.unitPrice = unitPrice;
     }
 
-
     public String getName() {
         return name;
     }
-
 
     public void setName(String name) {
         this.name = name;
     }
 
-
-    public Long getBarCode() {
+    public String getBarCode() {
         return barCode;
     }
 
-
-    public void setBarCode(Long barCode) {
+    public void setBarCode(String barCode) {
         this.barCode = barCode;
     }
-
 
     public String getType() {
         return type;
     }
 
-
     public void setType(String type) {
         this.type = type;
     }
-
 
     public LocalDate getManufactoringDate() {
         return manufactoringDate;
     }
 
-
     public void setManufactoringDate(LocalDate manufactoringDate) {
         this.manufactoringDate = manufactoringDate;
     }
-
 
     public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
-
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
-
 
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-
     public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
-
-    
 
     @Override
     public int hashCode() {
@@ -109,7 +110,6 @@ public class Product extends AbstractEntity<Long>{
         result = prime * result + ((unitPrice == null) ? 0 : unitPrice.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -153,11 +153,10 @@ public class Product extends AbstractEntity<Long>{
         return true;
     }
 
-
     @Override
     public String toString() {
         return "Product [name=" + name + ", barCode=" + barCode + ", type=" + type + ", manufactoringDate="
                 + manufactoringDate + ", expirationDate=" + expirationDate + ", unitPrice=" + unitPrice + "]";
     }
-    
+
 }

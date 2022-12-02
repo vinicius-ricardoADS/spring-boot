@@ -1,15 +1,19 @@
-package com.pw3.e_commerce.model.domain;
+package com.pw3.e_commerce.domain;
 
 import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
-import jakarta.persistence.Id;
+import javax.persistence.Id;
 
-public abstract class AbstractEntity <ID extends Serializable> implements Serializable{
+import javax.persistence.MappedSuperclass;
 
-    @Id @GeneratedValue (strategy = GenerationType.IDENTITY)
+@MappedSuperclass
+public abstract class AbstractEntity<ID extends Serializable> implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private ID id;
 
     public ID getId() {
@@ -36,7 +40,7 @@ public abstract class AbstractEntity <ID extends Serializable> implements Serial
             return false;
         if (getClass() != obj.getClass())
             return false;
-        AbstractEntity other = (AbstractEntity) obj;
+        AbstractEntity<?> other = (AbstractEntity<?>) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -44,6 +48,5 @@ public abstract class AbstractEntity <ID extends Serializable> implements Serial
             return false;
         return true;
     }
-    
-    
+
 }
